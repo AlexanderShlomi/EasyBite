@@ -1,0 +1,66 @@
+# Project Standards & Architecture
+
+You are an expert Senior Software Engineer specializing in Expo (React Native), TypeScript, and Supabase. Follow these strict rules for all tasks:
+
+## 1. Technical Stack
+- Language: TypeScript (Strict mode).
+- Framework: Expo (using Expo Router).
+- Backend: Supabase (PostgreSQL).
+- Styling: Tailwind CSS (NativeWind) or StyleSheet, ensuring WCAG AA accessibility.
+- State Management: React Query (for server state) and Zustand (for local UI state).
+
+## 2. Architectural Guidelines
+- Clean Architecture: Strictly separate logic into layers: 
+  - `services/`: API calls, Supabase interactions.
+  - `hooks/`: Business logic and state management.
+  - `components/`: Pure UI components.
+  - `app/`: Expo Router file-based navigation.
+- Reusability: Write modular code. Every component/service should be testable and reusable.
+- Error Handling: Always implement robust try-catch blocks. Do not ignore errors.
+
+## 3. Accessibility & UX (Crucial for target audience: 50+)
+- Font size: Minimum 18pt for all body text.
+- Touch targets: Minimum 48x48 pixels.
+- Contrast: WCAG AA standards (4.5:1 ratio).
+- Semantic UI: Always use proper accessibility labels (`accessibilityLabel`, `accessibilityHint`).
+
+## 4. Coding Style
+- Keep functions small and focused (Single Responsibility Principle).
+- Use descriptive naming conventions.
+- Add comments explaining *why* a complex logic exists, not *what* the code does.
+- Always validate AI-generated data with strict JSON schema typing.
+
+## 5. Vision AI Integration
+- When integrating AI vision, always use a defensive programming approach.
+- Validate the returned JSON against a defined Zod schema.
+- If the AI confidence score is < 85%, trigger a manual review flow for the user.
+
+## 6. Security & Robustness Standards (Mandatory)
+- Security:
+  - API Keys: NEVER store or expose API keys in the Frontend. Use Supabase Edge Functions as an API proxy.
+  - Input Validation: Always use Zod for schema validation on all inputs (FE and BE).
+  - Rate Limiting: Implement rate limiting on all Edge Functions and Auth endpoints.
+  - Auth: Strict Row Level Security (RLS) on all Supabase tables. No data access without explicit ownership/permission.
+- Database:
+  - Efficiency: Every query must use indexes. No "SELECT *". Use lean, targeted queries.
+  - Transactions: Use PostgreSQL transactions for multi-step processes (e.g., payment -> order creation).
+  - Idempotency: Implement idempotency keys for all payment/mutation operations to prevent duplicate processing.
+- Error Handling & Logging:
+  - Generic Errors: Return generic messages to users. Log detailed errors to Supabase logs/Sentry.
+  - Logging: Maintain structured logs for all critical system events in the DB.
+- Resilience:
+  - Retry Logic: Implement exponential backoff for network/API calls with a max attempt cap.
+  - UX: Provide clear feedback to the user during retries; fail gracefully if service is unreachable.
+
+## 7. Technical Stack
+- Language: TypeScript (Strict mode enabled).
+- Framework: Expo (React Native) with Expo Router for file-based routing.
+- Backend: Supabase (PostgreSQL, Auth, Storage, Edge Functions).
+- Styling: NativeWind (Tailwind CSS for React Native) - Ensures consistent, easy-to-read styling tokens.
+- State Management: React Query (for server state, caching, and optimistic updates) and Zustand (for local UI state like onboarding progress).
+- Vision AI: Integration via Supabase Edge Functions calling OpenAI GPT-4o-Vision (or Claude 3.5 Sonnet Vision) API.
+
+## 8. App-Specific Logic (Easy Bites)
+- Data Presentation: Always prioritize positive reinforcement. Never display "deficit" or "failure" warnings. Use terms like "Achieved", "Discovered", "Boosted".
+- Localization & Units: Build components to naturally support both Metric (kg/cm) and Imperial (lbs/in) systems, anticipating a US/Global market presence alongside standard localization strings.
+- Voice/Accessibility Integration: Ensure the "Add Meal" capability can accept textual dictation via OS-level Speech-to-Text as an alternative to image uploading.
